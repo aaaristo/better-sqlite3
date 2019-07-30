@@ -1,7 +1,7 @@
 const ref = require('ref');
 const Database = require('.');
 
-let db = new Database();
+let db = new Database(':memory:');
 
 db.loadExtension('build/memvfs.node');
 
@@ -21,12 +21,14 @@ console.log('loaded');
     const memdb = new Database(`file:/whatever?ptr=0x${buf.hexAddress()}&sz=${dbbuf.length}&max=${buf.length}`, { vfs: 'memvfs' });
     await memdb.pragma('journal_mode = memory');
     console.log('memdb.name', memdb.name);
-    const res = await memdb.prepare('select * from ref').get();
+    const res = await memdb.prepare('select * from readme').get();
     console.log(res);
     console.log('qui2');
     await memdb.exec('create table refssss (name text)');
     console.log('qui');
     memdb.loadExtension('build/memvfs.node');
-    console.log('memvfs_dbsize()', await memdb.prepare('select memvfs_dbsize()').pluck().get());
+    const size = await memdb.prepare('select memvfs_dbsize()').pluck().get();
+    console.log('memvfs_dbsize()', );
+    const expbuf = buf.subarray(0, size);
 })().catch((err) => console.log(err, err.stack));
 
