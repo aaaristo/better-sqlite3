@@ -10,6 +10,7 @@
 #include <node.h>
 #include <node_object_wrap.h>
 #include <node_buffer.h>
+#include <iostream>
 #end
 #src
 NODE_MODULE(better_sqlite3, RegisterModule);

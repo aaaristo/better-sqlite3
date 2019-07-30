@@ -25,11 +25,16 @@
       'conditions': [['sqlite3 == ""', { 'sources': ['deps/test_extension.c'] }]],
     },
     {
+      'target_name': 'memvfs',
+      'dependencies': ['deps/sqlite3.gyp:sqlite3'],
+      'conditions': [['sqlite3 == ""', { 'sources': ['deps/memvfs.c'] }]],
+    },
+    {
       'target_name': 'place_resulting_binaries',
       'type': 'none',
-      'dependencies': ['better_sqlite3', 'test_extension'],
+      'dependencies': ['better_sqlite3', 'test_extension', 'memvfs'],
       'copies': [{
-        'files': ['<(PRODUCT_DIR)/better_sqlite3.node', '<(PRODUCT_DIR)/test_extension.node'],
+        'files': ['<(PRODUCT_DIR)/better_sqlite3.node', '<(PRODUCT_DIR)/test_extension.node', '<(PRODUCT_DIR)/memvfs.node'],
         'destination': 'build',
       }],
     },

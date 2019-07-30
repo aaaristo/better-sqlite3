@@ -61,6 +61,12 @@ describe('new Database()', function () {
 		expect(existsSync(util.current())).to.be.false;
 		db.close();
 	});
+	it('should allow in-memory vfs databases to be created', function () {
+		expect(existsSync(util.next())).to.be.false;
+		const db = new Database('file:/whatever?ptr=0xf05538&sz=14336&max=65536', { vfs: 'memvfs' });
+                console.log(db.name);
+		db.close();
+	});
 	it('should allow disk-bound databases to be created', function () {
 		expect(existsSync(util.next())).to.be.false;
 		const db = Database(util.current());

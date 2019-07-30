@@ -91,6 +91,6 @@ printf "\`\`\`\n" >> "$DOCS"
 
 echo "cleaning up..."
 cd - > /dev/null
-rm -rf "$TEMP"
+#rm -rf "$TEMP"
 
 echo "done!"

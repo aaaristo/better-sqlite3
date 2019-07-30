@@ -138,15 +138,20 @@ private:
 		REQUIRE_ARGUMENT_BOOLEAN(fifth, bool must_exist);
 		REQUIRE_ARGUMENT_INT32(sixth, int timeout);
 		REQUIRE_ARGUMENT_ANY(seventh, v8::Local<v8::Value> logger);
+		REQUIRE_ARGUMENT_STRING(eighth, v8::Local<v8::String> vfs);
 
 		UseIsolate;
 		sqlite3* db_handle;
 		v8::String::Utf8Value utf8(EXTRACT_STRING(isolate, filename));
+		v8::String::Utf8Value utf8vfs(EXTRACT_STRING(isolate, vfs));
+
 		int mask = readonly ? SQLITE_OPEN_READONLY
 			: must_exist ? SQLITE_OPEN_READWRITE
 			: (SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE);
 
-		if (sqlite3_open_v2(*utf8, &db_handle, mask, NULL) != SQLITE_OK) {
+		std::cout << "utf8vfs: " << *utf8vfs << " " << readonly << " " << must_exist << std::endl;
+
+		if (sqlite3_open_v2(*utf8, &db_handle, mask, *utf8vfs) != SQLITE_OK) {
 			ThrowSqliteError(db_handle);
 			int status = sqlite3_close(db_handle);
 			assert(status == SQLITE_OK); ((void)status);
